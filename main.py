@@ -6,6 +6,7 @@
 # *** read and write into plants.csv  ***
 #########################################
 
+file_name = "plants.csv"
 
 ## function 1
 # type your code here
@@ -29,12 +30,12 @@
 
 
 
-## function 5
+## function 4
 # type your code here
 
 
 
 
 
-## function 6
+## function 5
 # type your code here
