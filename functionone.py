@@ -67,4 +67,3 @@ def add_plant():
     print(f'the plant {plant_name} was added successfully')
 
 
-add_plant()
