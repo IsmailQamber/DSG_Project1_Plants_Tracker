@@ -42,7 +42,7 @@ def add_plant():
     #getting the watering frequency:
     while True: 
         watering_frequency=input('enter the watering frequency (in days) ').strip()
-        if watering_frequency.isdigit() and int(watering_frequency) > 0:
+        if watering_frequency.isdigit() and int(watering_frequency) > 0 and int(watering_frequency) < 4:
             watering_frequency=int(watering_frequency)
             break
         else :
@@ -67,4 +67,40 @@ def add_plant():
     print(f'the plant {plant_name} was added successfully')
 
 
-add_plant()
+def display_menue():
+    print('Plants tracker')
+    print('1. Add a new plant to the collection')
+    print('2. Record a plant care activity')
+    print('3. view plants due for care')
+    print('4. Search plants by name or location')
+    print('5. view all plants')
+    print('6. Exit')
+    return input('enter your choice(1,6): ')
+
+
+
+
+def main():
+    #the main function :
+    print('this is Go Green!')
+    print('this app helps you track and take care of your plnt')
+    
+    while True:
+        choice= display_menue()
+        
+        if choice =='1':
+            add_plant()
+        elif choice =='2':
+            record_activity()
+        elif choice =='3':
+            plants_care()
+        elif choice =='4':
+            plant_search()
+        elif choice =='5':
+            plant_view()
+        elif choice =='6':
+            print('Thank You!')
+            break
+        else:
+            print('Eter a valid number between 1-6')
+            
