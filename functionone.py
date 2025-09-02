@@ -14,9 +14,9 @@ def add_plant():
     except:
         with open('plants.csv', 'w',newline='') as file:
             writing=csv.writer(file)
-            writing.writerow(['id','plant_name/species', 'location in home',
-                            'date_acquired', 'watering frequency in days', 
-                            'sunlight needs(low, medium, high)' ])
+            writing.writerow(['id','plant_name/species', 'location_in_home',
+                            'date_acquired', 'watering_frequency_in_days', 
+                            'sunlight_needs(low, medium, high)' ])
             print('\n\n new plants.csv is created')
     print('\n====Add a New Plant====')
 
