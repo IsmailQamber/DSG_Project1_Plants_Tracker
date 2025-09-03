@@ -35,18 +35,20 @@ def record_activity():
 
     
     
-    rows = []
-    with open('plants.csv', mode='r') as file:
-        content = csv.DictReader(file)
-        for plant in content:
-            if plant['plant_name/species'].lower() == name.lower():
-                plant["Activity"] = activity
-                plant["Activity_Date"] = datetime.strptime(date_input,'%y-%m-%d')
-            rows.append(plant)
-
-    with open('plants.csv', mode='a', newline='') as file:
-        writing = csv.DictWriter(file, fieldnames=rows[0].keys())
-        writing.writerows(rows)
+    row= plant_df.loc[plant_df["plant_name/species"] == name].iloc[0]
+    plant_id = row["id"]
+    
+    try:
+        with open('care.csv', 'r', newline='') as file:
+            pass
+    except FileNotFoundError:
+            with open('care.csv', 'w', newline='') as file:
+                writing = csv.writer(file)
+                writing.writerow(['plant_id','Activity','Activity_Date'])
+    
+    with open('care.csv', 'a', newline='') as file:
+        writing = csv.writer(file)
+        writing.writerow([plant_id, activity, activity_date])
 
     
     print(f'\n\n{activity} was added for the plant {name} on the datee {activity_date} successfully.')
