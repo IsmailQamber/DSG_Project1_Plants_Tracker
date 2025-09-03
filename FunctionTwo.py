@@ -35,12 +35,10 @@ def record_activity():
 
     
     
-    row= plant_df.loc[plant_df["plant_name/species"] == name].iloc[0]
-    plant_id = row["id"]
+    plant_id = plant_df.loc[plant_df["plant_name/species"] == name, "id"].values[0]
     
     try:
         with open('care.csv', 'r', newline='') as file:
-            pass
     except FileNotFoundError:
             with open('care.csv', 'w', newline='') as file:
                 writing = csv.writer(file)
