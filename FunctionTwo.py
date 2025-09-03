@@ -44,9 +44,8 @@ def record_activity():
                 plant["Activity_Date"] = datetime.strptime(date_input,'%y-%m-%d')
             rows.append(plant)
 
-    with open('plants.csv', mode='w', newline='') as file:
+    with open('plants.csv', mode='a', newline='') as file:
         writing = csv.DictWriter(file, fieldnames=rows[0].keys())
-        writing.writeheader()
         writing.writerows(rows)
 
     
