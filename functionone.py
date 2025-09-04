@@ -48,7 +48,7 @@ def add_plant():
     #getting the type:
     type_options=['Cactus','Fern', 'Orchid', 'Herb', 'Chrysanthemum', 'Other' ]
     while True:
-        type_of_plant= input('Enter the type of your plant ').strip().capitalize()
+        type_of_plant= input('Enter the type of your plant (cactus, fern, orchid, herb,Chrysanthemum, other )').strip().capitalize()
         if type_of_plant in type_options:
             type_of_plant= type_of_plant.capitalize()
             break
