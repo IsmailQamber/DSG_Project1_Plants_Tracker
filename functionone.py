@@ -1,23 +1,10 @@
 import csv 
+import os
 import uuid
 from datetime import datetime
 
 def add_plant():
 
-    try:
-        with open('plants.csv', 'r',newline='') as file:
-            reading=csv.DictReader(file)
-            for row in reading:
-                row['watering_frequency'] = int(row['watering_frequency'])
-        print('\nplants.csv existis')
-
-    except:
-        with open('plants.csv', 'w',newline='') as file:
-            writing=csv.writer(file)
-            writing.writerow(['id','plant_name/species', 'location_in_home',
-                            'date_acquired', 'watering_frequency_in_days', 
-                            'sunlight_needs(low, medium, high)' ])
-            print('\n\n new plants.csv is created')
     print('\n====Add a New Plant====')
 
     # unique id for the plant
@@ -58,13 +45,35 @@ def add_plant():
         else:
             print('invalid. please enter from the options ')
 
+    #getting the type:
+    type_options=['Cactus','Fern', 'Orchid', 'Herb', 'Chrysanthemum', 'Other' ]
+    while True:
+        type_of_plant= input('Enter the type of your plant').strip().capitalize()
+        if type_of_plant in type_options:
+            type_of_plant= type_of_plant.capitalize()
+            break
+        else:
+            print('invalid. enter again from the list provided')
+
+    
+
     #saving the plants info:
-    with open('plants.csv', 'a', newline='') as file:
-        writing =csv.writer(file)
-        writing.writerow([plant_id, plant_name, location_ ,
-                           date_acquired, watering_frequency, sunlight_need ])
-        
-    print(f'the plant {plant_name} was added successfully')
+    if os.path.exists('plants.csv'):
+        with open('plants.csv', 'a', newline='') as file:
+            writing =csv.writer(file)
+            writing.writerow([plant_id, plant_name, location_ ,
+                               date_acquired, watering_frequency, sunlight_need , type_of_plant])
+    else:
+        with open('plants.csv', 'w',newline='') as file:
+            writing=csv.writer(file)
+            writing.writerow(['id','plant_name/species', 'location in home',
+                            'date_acquired', 'watering frequency in days',
+                            'sunlight needs(low, medium, high)', 'type_of_plant' ])
+            print('\n\n new plants.csv is created')
+
+    # cheching for reminders:
+    reminder()
+       
 
 
 def display_menue():
@@ -104,3 +113,111 @@ def main():
         else:
             print('Eter a valid number between 1-6')
             
+def diagnosis():
+
+    problems = {
+        "underwatering": ["dry soil", "wilting", "crispy edges", "leaves curling"],
+        "overwatering / Root Rot": ["yellow leaves", "wet soil", "mushy stem", "leaf drop"],
+        "low humidity": ["brown tips", "crispy edges", "leaf curling"],
+        "little light": ["leggy growth", "pale leaves", "slow growth"],
+        "so Much Light": ["brown spots", "bleached patches", "crispy patches"],
+        "Pests": ["sticky residue", "webbing", "tiny bugs", "deformed leaves"]
+    }
+
+    
+
+
+
+    while True:
+        try:
+            user= input('enter the symptom and separate by a comma').lower().strip()
+            if not user:
+                print("No symptoms entered.") 
+            
+            # turning the input into a list
+            symptoms = [s.strip() for s in user.split(",") if s.strip()]
+
+        except ValueError :
+            print("enter a valid input")
+            continue
+        
+
+        #checking for matches
+        results = []
+        for problem, problem_symptoms in problems.items():
+            matched = []
+            for s in symptoms:
+                if s in problem_symptoms:
+                    matched.append(s)
+
+            if matched:  # if any symptom matched this problem
+                results.append(problem)
+
+        # return results 
+        return results
+    
+
+
+def reminder():
+        # define seasons by months
+    season = ""
+    month = datetime.today().month
+    if month in [12, 1, 2]:
+        season = "winter"
+    elif month in [3, 4, 5]:
+        season = "spring"
+    elif month in [6, 7, 8]:
+        season = "summer"
+    elif month in [9, 10, 11]:
+        season = "autumn"
+
+    # plant types need care in which season
+    '''care_rules = {
+        "Cactus": "Needs less water in winter, careful not to overwater.",
+        "Fern": "Needs more water and humidity in summer.",
+        "Orchid": "Needs bright light in winter, careful of cold drafts.",
+        "Herb": "Grows fast in summer, needs more trimming and water."
+    }'''
+
+    care_rules = {
+        
+        "Cactus": 
+        { "Winter": "Needs less water in winter, careful not to overwater.",
+         "Summer": "Soil dries quickly; check sooner between waterings."},
+
+        "Fern": 
+        { "Summer": "Needs more water and humidity in summer.",
+          "Winter": "Heaters dry air; keep soil evenly moist."},
+
+        "Orchid": 
+        { "Winter": "Needs bright light in winter, careful of cold drafts.",
+          "Summer": "Protect from harsh sunlight; water more often."},
+
+        "Herb": 
+        { "Summer": "Grows fast in summer, needs more trimming and water."},
+
+        "Chrysanthemum": 
+        { "Autumn": "Mums bloom in fall; water regularly, deadhead spent flowers, and protect from frost."}
+
+    }
+
+    print(f"\n=== Seasonal Care Reminders ({season}) ===")
+    found = False
+
+    with open("plants.csv", "r") as file:
+        reader = csv.DictReader(file)  # skip header row
+
+        #looping over every row and getting the plant name and the type
+        for row in reader:
+            plant_name = row['plant_name/species']
+            plant_type = row['type_of_plant']
+        #check if the plant type from the row in the data existis in the dictionary, 
+        # then check if the season is insied the little dictionary for this plant type
+            if plant_type in care_rules and season in care_rules[plant_type]:
+                print(f"- {plant_name} , ({plant_type}) : {care_rules[plant_type][season]}")
+                found = True
+
+    if not found:
+        print("No seasonal care reminders for any plant in this season.")
+
+
