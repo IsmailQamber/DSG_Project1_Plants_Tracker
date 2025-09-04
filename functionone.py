@@ -48,7 +48,7 @@ def add_plant():
     #getting the type:
     type_options=['Cactus','Fern', 'Orchid', 'Herb', 'Chrysanthemum', 'Other' ]
     while True:
-        type_of_plant= input('Enter the type of your plant').strip().capitalize()
+        type_of_plant= input('Enter the type of your plant ').strip().capitalize()
         if type_of_plant in type_options:
             type_of_plant= type_of_plant.capitalize()
             break
@@ -115,6 +115,8 @@ def main():
             
 def diagnosis():
 
+    #dictionary for the problems and a list of the symptoms for them 
+
     problems = {
         "underwatering": ["dry soil", "wilting", "crispy edges", "leaves curling"],
         "overwatering / Root Rot": ["yellow leaves", "wet soil", "mushy stem", "leaf drop"],
@@ -123,9 +125,6 @@ def diagnosis():
         "so Much Light": ["brown spots", "bleached patches", "crispy patches"],
         "Pests": ["sticky residue", "webbing", "tiny bugs", "deformed leaves"]
     }
-
-    
-
 
 
     while True:
@@ -142,7 +141,11 @@ def diagnosis():
             continue
         
 
-        #checking for matches
+        #checking for matches, for each problem and its symptoms in the dictionary,
+        # go to each symptom in the symptoms list created from the users input,
+        # and check for matches in the problem_symptoms(the little list inside each problem in our dictionary)
+        #if exists, append to to the matched []
+        #if there are any symptoms matching. return the append the problem to  result []
         results = []
         for problem, problem_symptoms in problems.items():
             matched = []
@@ -150,7 +153,7 @@ def diagnosis():
                 if s in problem_symptoms:
                     matched.append(s)
 
-            if matched:  # if any symptom matched this problem
+            if matched:  
                 results.append(problem)
 
         # return results 
@@ -159,19 +162,19 @@ def diagnosis():
 
 
 def reminder():
-        # define seasons by months
+        # defining seasons by months
     season = ""
     month = datetime.today().month
     if month in [12, 1, 2]:
-        season = "winter"
+        season = "Winter"
     elif month in [3, 4, 5]:
-        season = "spring"
+        season = "Spring"
     elif month in [6, 7, 8]:
-        season = "summer"
+        season = "Summer"
     elif month in [9, 10, 11]:
-        season = "autumn"
+        season = "Autumn"
 
-    # plant types need care in which season
+    
     '''care_rules = {
         "Cactus": "Needs less water in winter, careful not to overwater.",
         "Fern": "Needs more water and humidity in summer.",
@@ -179,6 +182,8 @@ def reminder():
         "Herb": "Grows fast in summer, needs more trimming and water."
     }'''
 
+
+    #rules for each type in each season
     care_rules = {
         
         "Cactus": 
@@ -201,7 +206,7 @@ def reminder():
 
     }
 
-    print(f"\n=== Seasonal Care Reminders ({season}) ===")
+    print(f"\n=== Seasonal Care Reminders for ({season}) :")
     found = False
 
     with open("plants.csv", "r") as file:
@@ -221,3 +226,4 @@ def reminder():
         print("No seasonal care reminders for any plant in this season.")
 
 
+add_plant()
