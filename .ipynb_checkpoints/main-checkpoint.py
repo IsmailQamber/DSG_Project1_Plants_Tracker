@@ -70,13 +70,13 @@ def add_plant():
         with open('plants.csv', 'w',newline='') as file:
             writing=csv.writer(file)
             writing.writerow(['id','plant_name/species', 'location in home',
-                            'date_acquired', 'watering frequency in days',
+                            'date_acquired', 'watering_frequency_in_days',
                             'sunlight needs(low, medium, high)', 'type_of_plant' ])
             writing.writerow([plant_id, plant_name, location_ ,
                                date_acquired, watering_frequency, sunlight_need , type_of_plant])
             print('\n\n new plants.csv is created')
     # growth tracking part 
-    add_plant_growth(plant_name)
+    add_plant_growth(plant_name, date_acquired)
     # cheching for reminders:
     reminder()
     
@@ -222,7 +222,7 @@ def plant_growth():
         if userInput == 1:
             plant_name = input("Enter the name of the plant: ")
             if search_by_name(plant_name) is not None:
-                add_plant_growth(plant_name)
+                add_plant_growth(plant_name, None)
             else:
                 print("Plant not found1.")
 
@@ -253,7 +253,7 @@ def plant_growth():
             print("Invalid choice")
 
 
-def add_plant_growth(name):
+def add_plant_growth(name, _date):
     if not os.path.exists('growth.csv'):
         with open('growth.csv', 'w', newline='') as file:
             writing = csv.writer(file)
@@ -269,7 +269,11 @@ def add_plant_growth(name):
             
     id = None
     today_date = date.today()
-    formatted_today_date =  today_date.strftime("%y-%m-%d").lstrip("0").replace("-0", "-")
+    if _date is None:
+        formatted_today_date =  today_date.strftime("%y-%m-%d").lstrip("0").replace("-0", "-")
+    else:
+        formatted_today_date = _date
+        
     with open('plants.csv', mode='r') as file:
         content = csv.DictReader(file)
         for plant in content:
@@ -454,8 +458,8 @@ def adjust_care():
         for row in reader:
             plant_name = row['plant_name/species']
             plant_type = row['type_of_plant']
-            watering_freq = int(row['watering frequency in days'])
-            adjusted_watering = int(row['watering frequency in days']) + care_adjustment[plant_type][current_season]
+            watering_freq = int(row['watering_frequency_in_days'])
+            adjusted_watering = int(row['watering_frequency_in_days']) + care_adjustment[plant_type][current_season]
         
             if plant_type in care_adjustment and current_season in care_adjustment[plant_type]:
                 if watering_freq != adjusted_watering:
@@ -481,7 +485,7 @@ def diagnosis():
 
     while True:
         try:
-            user= input('enter the symptom and separate by a comma').lower().strip()
+            user= input('enter the symptom and separate by a comma e.g. (dry soil, yellow leaves, leaf curling, tiny bugs, brown spots)').lower().strip()
             if not user:
                 print("No symptoms entered.") 
             
@@ -516,7 +520,7 @@ def diagnosis():
             print(f"{index + 1}. {result}")
         ## the printing can be modified to check if two symptoms have the same cause -> use dict, cause is the key and syptoms
     else:
-        print("The symptoms entered are not registered in our system :)")
+        print("The symptoms entered are not registered in our system, enter a more  :)")
 ###########################################################################
 
 def display_menue():
@@ -537,7 +541,7 @@ def display_menue():
 
 def main():
     #the main function :
-    print('this is Go Green!')
+    print('this is Green Log!')
     print('this app helps you track and take care of your plnt')
     
     while True:
