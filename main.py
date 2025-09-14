@@ -459,7 +459,8 @@ def adjust_care():
             plant_name = row['plant_name/species']
             plant_type = row['type_of_plant']
             watering_freq = int(row['watering_frequency_in_days'])
-            adjusted_watering = int(row['watering_frequency_in_days']) + care_adjustment[plant_type][current_season]
+            if current_season in care_adjustment[plant_type]:
+                adjusted_watering = int(row['watering_frequency_in_days']) + care_adjustment[plant_type][current_season]
         
             if plant_type in care_adjustment and current_season in care_adjustment[plant_type]:
                 if watering_freq != adjusted_watering:
@@ -524,6 +525,36 @@ def diagnosis():
 ###########################################################################
 
 def display_menue():
+    print(
+     r"""
+  ________                              .____    ________    ________ 
+ /  _____/______   ____   ____   ____   |    |   \_____  \  /  _____/ 
+/   \  __\_  __ \_/ __ \_/ __ \ /    \  |    |    /   |   \/   \  ___ 
+\    \_\  \  | \/\  ___/\  ___/|   |  \ |    |___/    |    \    \_\  \
+ \______  /__|    \___  >\___  >___|  / |_______ \_______  /\______  /
+        \/            \/     \/     \/          \/       \/        \/ 
+"""
+    )
+    print(
+        r""" 
+                            .-~~-.--.
+                           :         )
+                     .~ ~ -.\       /.- ~~ .
+                     >       `.   .'       <
+                    (         .- -.         )
+                     `- -.-~  `- -'  ~-.- -'
+                       (        :        )           _ _ .-:
+                        ~--.    :    .--~        .-~  .-~  }    
+                            ~-.-^-.-~ \_      .~  .-~   .~
+                                     \ \'     \ '_ _ -~
+                                      `.`.    //
+                             . - ~ ~-.__`.`-.//
+                         .-~   . - ~  }~ ~ ~-.~-.
+                       .' .-~      .-~       :/~-.~-./:
+                      /_~_ _ . - ~                 ~-.~-._
+                                                       ~-.<
+        """
+    )
     print("***************************************")
     print('Plants tracker')
     print('1. Add a new plant to the collection')
